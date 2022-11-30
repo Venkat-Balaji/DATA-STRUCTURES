@@ -1,0 +1,251 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+    struct node *prev;
+    int val;
+    struct node *next;
+}*head,*temp,*tail,*current;
+void insertfirst(int b)
+{
+    temp=(struct node *)malloc(sizeof(struct node));
+    temp->val=b;
+    temp->next=temp->prev=NULL;
+    if(head==NULL)
+    {
+        head=temp;
+        tail=temp;
+    } 
+    else 
+    {
+        temp->next=head;
+        head->prev=temp;
+        head=temp;
+    }
+}
+void insertlast(int b)
+{
+    temp=(struct node *)malloc(sizeof(struct node));
+    temp->val=b;
+    temp->next=temp->prev=NULL;
+    if(head==NULL)
+    {
+        head=temp;
+        tail=temp;
+    }
+    else
+    {
+        tail->next=temp;
+        temp->prev=tail;
+        tail=temp;
+    }
+} 
+void insertvalue(int p,int b)
+{
+    temp=(struct node *)malloc(sizeof(struct node));
+    temp->val=b;
+    temp->next=temp->prev=NULL;
+    current=head;
+    while(current->val!=p)
+    {
+        current=current->next;
+    } 
+    temp->next=current->next;
+    temp->prev=current;
+    temp->next->prev=temp;
+    current->next=temp;
+} 
+void insertposition(int p,int b)
+{
+    temp=(struct node *)malloc(sizeof(struct node));
+    temp->val=b;
+    temp->next=temp->prev=NULL;
+    int i=0;
+    current=head;
+    while(i<p-1) 
+    {
+        current=current->next; 
+        i++;
+    } 
+    temp->next=current->next;
+    temp->prev=current;
+    temp->next->prev=temp;
+    current->next=temp;
+}
+void deletefirst()
+{
+    if (head==NULL)
+        printf("Linked list is empty");
+    else if (head==tail) 
+    { 
+        temp=head;
+        head=tail=NULL; 
+        free(temp);
+    }
+    else 
+    {
+        temp=head;
+        head=head->next;
+        head->prev=NULL;
+        free(temp);
+    }
+}
+void deletelast()
+{
+    temp=head;
+    if (head==NULL)
+        printf("Linked list is empty");
+    else if (head==tail)
+    { 
+        temp=head;
+        head=tail=NULL; 
+        free(temp); 
+    }
+    else
+    { 
+        temp=tail;
+        tail=tail->prev;
+        tail->next=NULL;
+        free(temp);
+   }
+}
+void deleteposition(int p)
+{
+    temp=head;
+    if(p==0)
+       deletefirst();
+    else
+    {
+       for(int i=0;i<p-1;i++)
+       {
+           temp=temp->next;
+       } 
+       current=temp->next; 
+       if (current==tail) 
+          deletelast();
+       else
+       {
+       temp->next=current->next;
+       current->next->prev=temp;
+       free(current);
+       }
+    }
+}
+void deletevalue(int p)
+{
+    current=head;
+    if(current->val==p)
+        deletefirst();
+    else
+    {
+    while(((current->next)->val)!=p)
+    {
+        current=current->next;
+    }
+    temp=current->next;
+    if(temp==tail)
+        deletelast();
+    else
+    {
+    current->next=temp->next;
+    current->next->prev=temp;
+    free(temp); 
+    } 
+    }
+}
+void display1()
+{
+    temp=head;
+    if (head==NULL)
+    {
+        printf("EMPTY");
+    }
+    else 
+    {
+    while(temp->next!=NULL)
+    {
+        printf("%d\t",temp->val);
+        temp=temp->next;
+    }
+    printf("%d\t",temp->val);
+    }
+} 
+void display2()
+{
+    temp=tail;
+    if (head==NULL)
+    {
+        printf("EMPTY");
+    }
+    else 
+    {
+    while(temp->prev!=NULL)
+    {
+        printf("%d\t",temp->val);
+        temp=temp->prev;
+    }
+    printf("%d\t",temp->val);
+    }
+} 
+int main()
+{
+    head=tail=NULL;
+    int c,p,b;
+    do
+    {
+        printf("\n1.Insert at first\n2.Insert at last\n3.insert at a position\n4.insert after a valuen\n5.Delete at first\n6.Delete at last\n7.Delete at a position\n8.Delete a value\n9.display1\n10.display2\n11.EXIT\n\nEnter :");
+        scanf("%d",&c);
+        switch(c)
+        {
+            case 1:
+                printf("Enter a value :");
+                scanf("%d",&b); 
+                insertfirst(b);
+                break;
+            case 2:
+                printf("Enter a value :");
+                scanf("%d",&b);
+                insertlast(b);
+                break;
+            case 3:
+                printf("Enter the possition :");
+                scanf("%d",&p);
+                printf("Enter a value :");
+                scanf("%d",&b);
+                insertposition(p,b);
+                break;
+            case 4:
+                printf("To be inserted after :");
+                scanf("%d",&p);
+                printf("Enter a value :");
+                scanf("%d",&b);
+                insertvalue(p,b);
+                break;
+            case 5:
+                deletefirst();
+                break;
+            case 6:
+                deletelast();
+                break;
+            case 7:
+                printf("Enter the position :");
+                scanf("%d",&p);
+                deleteposition(p);
+                break;
+            case 8:
+                printf("value to be deleted :");
+                scanf("%d",&p);
+                deletevalue(p);
+                break;
+            case 9:
+                display1();
+                break; 
+            case 10:
+                display2();
+                break;
+            case 11:
+                break;
+        }
+    }while(c!=11);
+}
+
