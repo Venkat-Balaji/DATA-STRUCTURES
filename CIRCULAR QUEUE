@@ -1,0 +1,139 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int size;
+int cqueue_arr[];
+int front=-1;
+int rear=-1;
+
+
+void display( );
+void insert(int item);
+int del();
+
+int isEmpty();
+int isFull();
+
+int main()
+{
+        int choice,item;
+        printf("\n Enter the size of the queue: ");
+                scanf("%d",&size);
+             cqueue_arr[size];
+
+                
+        while(1)
+        {
+        
+                printf("\n1.Insert\n");
+                printf("2.Delete\n");
+                printf("3.Display\n");
+                printf("4.Quit\n");
+                printf("\nEnter your choice : ");
+                scanf("%d",&choice);
+
+                switch(choice)
+                {
+                case 1 :
+                        printf("\nEnter an  element to insert : ");
+                        scanf("%d",&item);
+                        insert(item);
+                        break;
+                case 2 :
+                        printf("\n Deleted  element is : %d\n",del());
+                        break;
+                case 3:
+                        display();
+                        break;
+                case 4:
+                        exit(1);
+                default:
+                        printf("\nWrong choice.... Enter the correct choice!!\n");
+                }
+        }
+
+        return 0;
+
+}
+
+void insert(int item) //insertt
+{
+        if( isFull() )
+        {
+                printf("\nQueue Overflow\n");
+                return;
+        }
+        if(front == -1 )
+                front=0;
+
+        if(rear==size-1)
+                rear=0;
+        else
+                rear=rear+1;
+        cqueue_arr[rear]=item ;
+}
+
+int del() //delete
+{
+        int item;
+        if( isEmpty() )
+        {
+                printf("\nQueue Underflow\n");
+                exit(1);
+        }
+        item=cqueue_arr[front];
+        if(front==rear) /* queue has only one element */
+        {
+                front=-1;
+                rear=-1;
+        }
+        else if(front==size-1)
+                front=0;
+        else
+                front=front+1;
+        return item;
+}
+
+int isEmpty() //to check the queue is empty (underflow)
+{
+        if(front==-1)
+                return 1;
+        else
+                return 0;
+}
+
+int isFull() //to check the queue is full(overflow)
+{
+        if((front==0 && rear==size-1) || (front==rear+1))
+                return 1;
+        else
+                return 0;
+}
+
+
+void display() //display
+{
+        int i;
+        if(isEmpty())
+        {
+                printf("\nQueue is empty\n");
+                return;
+        }
+        printf("\nQueue elements :\n");
+        i=front;
+        if( front<=rear )
+        {
+                while(i<=rear)
+                        printf("%d ",cqueue_arr[i++]);
+        }
+        else
+        {
+                while(i<=size-1)
+                        printf("%d ",cqueue_arr[i++]);
+                i=0;
+                while(i<=rear)
+                        printf("%d ",cqueue_arr[i++]);
+        }
+        printf("\n");
+       
+}
